@@ -1,0 +1,1636 @@
+<!--<!DOCTYPE html>
+<html lang="es">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="_csrf" th:content="${_csrf.token}"/>
+        <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
+        <title>PawsTrack - Inicio</title>
+        <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
+        <style>
+            /* Estilos base heredados */
+            body {
+                font-family: 'Playfair Display', serif;
+                background-color: #f6f6f6;
+                margin: 0;
+                padding: 20px;
+            }
+            .navbar {
+                background-color: white;
+                box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+                padding: 15px 20px;
+                position: sticky;
+                top: 0;
+                z-index: 1000;
+            }
+
+            .nav-content {
+                max-width: 1200px;
+                margin: 0 auto;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+            }
+
+            .brand {
+                display: flex;
+                align-items: center;
+                gap: 15px;
+                text-decoration: none;
+            }
+
+            .logo-space {
+                width: 40px;
+                height: 40px;
+                background-color: #5a4d7c;
+                border-radius: 50%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+
+            .brand-name {
+                font-size: 1.5em;
+                color: #5a4d7c;
+                font-weight: bold;
+                margin: 0;
+            }
+
+            .nav-links {
+                display: flex;
+                gap: 20px;
+                align-items: center;
+            }
+
+            .nav-link {
+                color: #5a4d7c;
+                text-decoration: none;
+                padding: 8px 16px;
+                border-radius: 5px;
+                transition: all 0.3s ease;
+            }
+
+            .nav-link:hover {
+                background-color: #f0f0f0;
+            }
+
+            .menu-button {
+                display: none;
+                background: none;
+                border: none;
+                cursor: pointer;
+                padding: 5px;
+            }
+
+            .menu-icon {
+                width: 30px;
+                height: 20px;
+                position: relative;
+                transform: rotate(0deg);
+                transition: .5s ease-in-out;
+                cursor: pointer;
+            }
+
+            .menu-icon span {
+                display: block;
+                position: absolute;
+                height: 3px;
+                width: 100%;
+                background: #5a4d7c;
+                border-radius: 3px;
+                opacity: 1;
+                left: 0;
+                transform: rotate(0deg);
+                transition: .25s ease-in-out;
+            }
+
+            .menu-icon span:nth-child(1) {
+                top: 0px;
+            }
+            .menu-icon span:nth-child(2) {
+                top: 8px;
+            }
+            .menu-icon span:nth-child(3) {
+                top: 16px;
+            }
+
+            .menu-open .menu-icon span:nth-child(1) {
+                top: 8px;
+                transform: rotate(135deg);
+            }
+
+            .menu-open .menu-icon span:nth-child(2) {
+                opacity: 0;
+                left: -60px;
+            }
+
+            .menu-open .menu-icon span:nth-child(3) {
+                top: 8px;
+                transform: rotate(-135deg);
+            }
+
+            @media (max-width: 768px) {
+                .menu-button {
+                    display: block;
+                }
+
+                .nav-links {
+                    display: none;
+                    width: 100%;
+                    position: absolute;
+                    top: 100%;
+                    left: 0;
+                    background-color: white;
+                    padding: 20px;
+                    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+                    flex-direction: column;
+                    align-items: stretch;
+                }
+
+                .nav-links.active {
+                    display: flex;
+                }
+
+                .nav-link {
+                    text-align: center;
+                    padding: 12px 16px;
+                }
+
+                .brand-name {
+                    font-size: 1.2em;
+                }
+            }
+            .container {
+                max-width: 1200px;
+                margin: 0 auto;
+                padding: 20px;
+            }
+
+            h1 {
+                text-align: center;
+                color: #5a4d7c;
+                font-size: 2.5em;
+                margin-bottom: 30px;
+            }
+
+            .header-actions {
+                text-align: center;
+                margin-bottom: 40px;
+            }
+
+            .btn {
+                display: inline-block;
+                background-color: #5a4d7c;
+                color: white;
+                padding: 10px 20px;
+                border-radius: 5px;
+                text-decoration: none;
+                margin: 5px;
+                transition: background-color 0.3s;
+            }
+
+            .btn:hover {
+                background-color: #9c7ca4;
+            }
+
+            .btn.delete {
+                background-color: #dc3545;
+            }
+
+            .btn.delete:hover {
+                background-color: #c82333;
+            }
+
+            .btn.edit {
+                background-color: #28a745;
+            }
+
+            .btn.edit:hover {
+                background-color: #218838;
+            }
+
+            /* LAYOUT DE CARDS MEJORADO */
+            .cards-grid {
+                display: grid;
+                grid-template-columns: repeat(4, 1fr);
+                gap: 20px;
+                padding: 20px 0;
+                width: 100%;
+            }
+
+            /*            .pet-card {
+                            background: white;
+                            border-radius: 12px;
+                            overflow: hidden;
+                            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+                            transition: all 0.3s ease;
+                            transform: translateY(0);
+                            display: flex;
+                            flex-direction: column;
+                            height: auto;
+                            min-height: 400px;
+                        }
+            
+                        .pet-card:hover {
+                            transform: translateY(-5px);
+                            box-shadow: 0 6px 12px rgba(0,0,0,0.1);
+                        }*/
+
+            .card-image {
+                width: 100%;
+                height: 220px;
+                overflow: hidden;
+                position: relative;
+            }
+
+            .card-image img {
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+                transition: transform 0.5s ease;
+            }
+
+            .pet-card:hover .card-image img {
+                transform: scale(1.05);
+            }
+
+            .card-content {
+                padding: 20px;
+                flex-grow: 1;
+                display: flex;
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .card-field {
+                margin-bottom: 10px;
+            }
+
+            .card-label {
+                font-weight: bold;
+                color: #5a4d7c;
+                margin-bottom: 5px;
+                display: block;
+                font-size: 0.9em;
+            }
+
+            .card-value {
+                color: #666;
+                line-height: 1.4;
+                word-wrap: break-word;
+                margin-bottom: 10px;
+            }
+
+            .card-description {
+                color: #666;
+                line-height: 1.4;
+                margin: 10px 0;
+                flex-grow: 1;
+            }
+
+            .card-actions {
+                padding: 15px;
+                background-color: #f8f9fa;
+                text-align: center;
+                border-top: 1px solid #eee;
+                margin-top: auto;
+            }
+
+            .no-results {
+                grid-column: 1 / -1;
+                text-align: center;
+                padding: 40px 20px;
+                color: #666;
+                font-size: 1.1em;
+            }
+
+            /* RESPONSIVE DESIGN MEJORADO */
+            @media (max-width: 1200px) {
+                .cards-grid {
+                    grid-template-columns: repeat(3, 1fr);
+                    gap: 18px;
+                }
+            }
+
+            @media (max-width: 900px) {
+                .cards-grid {
+                    grid-template-columns: repeat(2, 1fr);
+                    gap: 15px;
+                }
+            }
+
+            @media (max-width: 600px) {
+                .cards-grid {
+                    grid-template-columns: 1fr;
+                    gap: 15px;
+                    padding: 15px 0;
+                }
+
+                .pet-card {
+                    min-height: 350px;
+                }
+
+                .card-image {
+                    height: 180px;
+                }
+
+                .card-content {
+                    padding: 15px;
+                }
+            }
+
+            @media (max-width: 480px) {
+                .container {
+                    padding: 10px;
+                }
+
+                .cards-grid {
+                    gap: 10px;
+                }
+
+                .card-content {
+                    padding: 12px;
+                }
+
+                .filters-section {
+                    padding: 20px 15px;
+                    border-radius: 15px;
+                }
+
+                .filters-grid {
+                    grid-template-columns: 1fr;
+                    gap: 15px;
+                }
+
+                h4 {
+                    font-size: 1.6em;
+                    margin: 30px 0 20px 0;
+                }
+
+                h4::after {
+                    width: 60px;
+                }
+            }
+
+            /* Estilos para los filtros - DISEÑO AESTHETIC */
+            .filters-section {
+                background: linear-gradient(135deg, #ffffff 0%, #f8f9ff 100%);
+                padding: 25px;
+                border-radius: 20px;
+                box-shadow: 0 8px 32px rgba(90, 77, 124, 0.1);
+                margin-bottom: 40px;
+                border: 1px solid rgba(90, 77, 124, 0.1);
+                backdrop-filter: blur(10px);
+            }
+
+            .filters-grid {
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+                gap: 20px;
+                align-items: end;
+            }
+
+            .filter-group {
+                display: flex;
+                flex-direction: column;
+                gap: 8px;
+                position: relative;
+            }
+
+            .filter-group label {
+                color: #5a4d7c;
+                font-weight: 600;
+                font-size: 0.9em;
+                text-transform: uppercase;
+                letter-spacing: 0.5px;
+                margin-bottom: 5px;
+            }
+
+            .filter-group select {
+                padding: 12px 16px;
+                border: 2px solid transparent;
+                border-radius: 12px;
+                outline: none;
+                background: white;
+                color: #333;
+                font-size: 0.95em;
+                transition: all 0.3s ease;
+                box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+                cursor: pointer;
+            }
+
+            .filter-group select:hover {
+                border-color: #9c7ca4;
+                transform: translateY(-1px);
+                box-shadow: 0 4px 12px rgba(156, 124, 164, 0.15);
+            }
+
+            .filter-group select:focus {
+                border-color: #5a4d7c;
+                box-shadow: 0 0 0 3px rgba(90, 77, 124, 0.1);
+            }
+
+            .filter-group .btn {
+                padding: 12px 24px;
+                border-radius: 12px;
+                font-weight: 600;
+                text-transform: uppercase;
+                letter-spacing: 0.5px;
+                font-size: 0.85em;
+                transition: all 0.3s ease;
+                border: none;
+                cursor: pointer;
+            }
+
+            .filter-group .btn:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 6px 20px rgba(90, 77, 124, 0.25);
+            }
+
+            .filter-group .btn.secondary {
+                background: linear-gradient(135deg, #f1f3f4 0%, #e8eaed 100%);
+                color: #5a4d7c;
+            }
+
+            .filter-group .btn.secondary:hover {
+                background: linear-gradient(135deg, #e8eaed 0%, #dadce0 100%);
+            }
+
+            /* Carrusel */
+            .carousel {
+                position: relative;
+                overflow: hidden;
+                width: 100%;
+                max-width: 600px;
+                margin: auto;
+                margin-bottom: 40px;
+            }
+
+            .carousel-items {
+                display: flex;
+                transition: transform 0.5s ease-in-out;
+                width: 100%;
+            }
+
+            .carousel-item {
+                min-width: 100%;
+                box-sizing: border-box;
+                text-align: center;
+            }
+
+            .carousel-item img {
+                width: 50%;
+                height: 50%;
+                object-fit: contain;
+            }
+
+            .carousel-buttons {
+                position: absolute;
+                top: 50%;
+                width: 100%;
+                display: flex;
+                justify-content: space-between;
+                transform: translateY(-50%);
+            }
+
+            .carousel-button {
+                background-color: rgba(0, 0, 0, 0.5);
+                border: none;
+                color: #9c7ca4;
+                padding: 10px;
+                cursor: pointer;
+                font-size: 18px;
+            }
+
+            /* Botones de adopción */
+            .adopt-button {
+                background-color: #9c7ca4;
+                color: white;
+                border: none;
+                padding: 12px 20px;
+                border-radius: 5px;
+                cursor: pointer;
+                transition: background-color 0.3s;
+                display: inline-block;
+                text-decoration: none;
+                margin-top: 10px;
+                text-align: center;
+                width: 100%;
+                box-sizing: border-box;
+            }
+
+            .adopt-button:hover {
+                background-color: #5a4d7c;
+            }
+
+            h4{
+                font-size: 2em;
+                color: #5a4d7c;
+                font-weight: 700;
+                margin: 40px 0 30px 0;
+                text-align: center;
+                position: relative;
+                text-transform: uppercase;
+                letter-spacing: 1px;
+            }
+
+            h4::after {
+                content: '';
+                position: absolute;
+                bottom: -10px;
+                left: 50%;
+                transform: translateX(-50%);
+                width: 80px;
+                height: 3px;
+                background: linear-gradient(135deg, #5a4d7c 0%, #9c7ca4 100%);
+                border-radius: 2px;
+            }
+
+            h4:first-of-type {
+                margin-top: 20px;
+            }
+
+            .spinner {
+                display: inline-block;
+                width: 1em;
+                height: 1em;
+                border: 2px solid rgba(0,0,0,0.2);
+                border-radius: 50%;
+                border-top-color: #5a4d7c;
+                animation: spin 1s ease-in-out infinite;
+            }
+            .pet-card {
+                border: 2px solid #000;
+                border-radius: 20px;
+                padding: 20px;
+                width: 300px;
+                margin: 10px;
+                background-color: white;
+                display: inline-block;
+                vertical-align: top;
+            }
+
+            .estado-label {
+                padding: 8px 16px;
+                font-weight: bold;
+                border-radius: 8px;
+                font-size: 0.9em;
+                margin-bottom: 10px;
+                display: block;
+                width: fit-content;
+            }
+
+            .verde {
+                background-color: #28a745;
+                color: white;
+            }
+
+            .amarillo {
+                background-color: #ffc107;
+                color: black;
+            }
+
+            .rojo {
+                background-color: #dc3545;
+                color: white;
+            }
+
+            @keyframes spin {
+                to {
+                    transform: rotate(360deg);
+                }
+            }
+
+        </style>
+    </head>
+    <body>
+        <nav class="navbar">
+            <div class="nav-content">
+                <a th:href="@{/home}"  class="brand">
+                    <div class="logo-space">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="white">
+                        <path d="M12,2C6.48,2,2,6.48,2,12c0,5.52,4.48,10,10,10s10-4.48,10-10C22,6.48,17.52,2,12,2z M12,20c-4.41,0-8-3.59-8-8 c0-4.41,3.59-8,8-8s8,3.59,8,8C20,16.41,16.41,20,12,20z"/>
+                        <circle cx="9" cy="9" r="1.5"/>
+                        <circle cx="15" cy="9" r="1.5"/>
+                        <path d="M12,17.5c2.33,0,4.31-1.46,5.11-3.5H6.89C7.69,16.04,9.67,17.5,12,17.5z"/>
+                        </svg>
+                    </div>
+                    <span class="brand-name">PawsTrack</span>
+                </a>
+
+                <button class="menu-button" onclick="toggleMenu()">
+                    <div class="menu-icon">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </div>
+                </button>
+
+                <div class="nav-links" id="navLinks">
+                    <a th:href="@{/home}" class="nav-link">Home</a>
+                    
+                    <a th:href="@{/index}" class="nav-link">Mis publicaciones</a>
+                    <a href="/perfil" class="nav-link">Perfil</a>
+                    <a href="/logout">Cerrar Sesión</a>
+                </div>
+            </div>
+        </nav>
+
+        <div class="container">
+            <h4>Buscame!</h4>
+
+             Sección de filtros 
+            <div class="filters-section">
+                <form th:action="@{/home}" method="get" class="filters-grid">
+                    <div class="filter-group">
+                        <label for="especie">Especie</label>
+                        <select id="especie" name="especie">
+                            <option value="">Todas</option>
+                            <option value="PERRO">Perro</option>
+                            <option value="GATO">Gato</option>
+                            <option value="OTRO">Otro</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <label for="edad">Edad</label>
+                        <select id="edad" name="edad">
+                            <option value="">Todas</option>
+                            <option value="CACHORRO">Cachorro</option>
+                            <option value="JOVEN">Joven</option>
+                            <option value="ADULTO">Adulto</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <label for="tamanio">Tamaño</label>
+                        <select id="tamanio" name="tamanio">
+                            <option value="">Todos</option>
+                            <option value="PEQUENIO">Pequeño</option>
+                            <option value="MEDIANO">Mediano</option>
+                            <option value="GRANDE">Grande</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <label for="departamento">Departamento</label>
+                        <select id="departamento" name="departamento">
+                            <option value="">Todos</option>
+                            <option value="Capital">Capital</option>
+                            <option value="Godoy Cruz">Godoy Cruz</option>
+                            <option value="Guaymallén">Guaymallén</option>
+                            <option value="Las Heras">Las Heras</option>
+                            <option value="Luján de Cuyo">Luján de Cuyo</option>
+                            <option value="Maipú">Maipú</option>
+                            <option value="San Martín">San Martín</option>
+                            <option value="San Rafael">San Rafael</option>
+                            <option value="Tunuyán">Tunuyán</option>
+                            <option value="Tupungato">Tupungato</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <button type="submit" class="btn">Filtrar</button>
+                        <a href="/home" class="btn secondary">Limpiar</a>
+                    </div>
+                </form>
+            </div>
+
+            <h4>Los animales con más espera...</h4>
+            <div class="carousel">
+                <div class="carousel-items">
+                    <div class="carousel-item" th:each="publicacion, iterStat : ${publicaciones}" th:data-index="${iterStat.index}">
+                        <img th:src="@{'/imagenes/' + ${publicacion.archivoFoto}}" alt="Mascota">
+                        <div class="carousel-description">
+                            <h3 th:text="${publicacion.nombreMascota}"></h3>
+                            <p th:text="${publicacion.descripcion}"></p>
+                        </div>
+                    </div>
+                </div>
+                <div class="carousel-buttons">
+                    <button class="carousel-button left">←</button>
+                    <button class="carousel-button right">→</button>
+                </div>
+            </div>
+
+            <h4>¡Adoptanos!</h4>
+             Grid de mascotas 
+            <div class="cards-grid">
+                
+                 Verifica si hay publicaciones 
+                <div th:if="${not #lists.isEmpty(publicaciones)}" th:each="publicacion : ${publicaciones}" class="pet-card">
+                     Muestra el estado si existe 
+                    <div th:if="${publicacion.estado != null}">
+                        <div th:if="${publicacion.estado.toString()} == 'EN_STOCK'" class="estado-label verde">En stock</div>
+                        <div th:if="${publicacion.estado.toString()} == 'EN_PROCESO'" class="estado-label amarillo">En proceso</div>
+                        <div th:if="${publicacion.estado.toString()} == 'ADOPTADO'" class="estado-label rojo">Adoptado</div>
+                    </div>
+
+                     Imagen con validación 
+                    <div class="card-image">
+                        <img th:if="${publicacion.archivoFoto != null}" th:src="@{'/imagenes/' + ${publicacion.archivoFoto}}" alt="Mascota">
+                        <img th:unless="${publicacion.archivoFoto != null}" src="/images/default-pet.jpg" alt="Mascota default">
+                    </div>
+
+                     Contenido con validación 
+                    <div class="card-content">
+                        <div class="card-field">
+                            <span class="card-label">Nombre</span>
+                            <span class="card-value" th:text="${publicacion.nombreMascota} ?: 'Sin nombre'"></span>
+                        </div>
+
+                        <div class="card-field">
+                            <span class="card-label">Especie</span>
+                            <span class="card-value" th:text="${publicacion.especie} ?: 'No especificado'"></span>
+                        </div>
+
+                        <div class="card-field">
+                            <span class="card-label">Edad</span>
+                            <span class="card-value" th:text="${publicacion.edad} ?: 'No especificado'"></span>
+                        </div>
+
+                        <div class="card-field">
+                            <span class="card-label">Descripción</span>
+                            <p class="card-description" th:text="${publicacion.descripcion} ?: 'Sin descripción'"></p>
+                        </div>
+
+                         Botón WhatsApp con validación 
+                        <a th:href="'https://wa.me/54' + ${publicacion.telefono} + '?text=Hola!%20Vi%20tu%20publicación%20y%20me%20gustaría%20adoptar%20a%20' + ${publicacion.nombreMascota}" class="adopt-button" target="_blank">
+                            Adoptar vía WhatsApp
+                        </a>
+                    </div>
+                </div>
+
+                 Mensaje cuando no hay publicaciones 
+                <div th:unless="${not #lists.isEmpty(publicaciones)}" class="no-results">
+                    No se encontraron publicaciones que coincidan con los filtros.
+                </div>
+            </div>
+        </div>
+
+        <script>
+            // Funciones del menú heredadas
+            function toggleMenu() {
+                const navLinks = document.getElementById('navLinks');
+                navLinks.classList.toggle('active');
+                document.querySelector('.menu-button').classList.toggle('menu-open');
+            }
+
+            // Cerrar menú al hacer clic en un enlace
+            document.querySelectorAll('.nav-link').forEach(link => {
+                link.addEventListener('click', () => {
+                    const navLinks = document.getElementById('navLinks');
+                    navLinks.classList.remove('active');
+                    document.querySelector('.menu-button').classList.remove('menu-open');
+                });
+            });
+
+            // Cerrar menú al redimensionar la ventana
+            window.addEventListener('resize', () => {
+                if (window.innerWidth > 768) {
+                    const navLinks = document.getElementById('navLinks');
+                    navLinks.classList.remove('active');
+                    document.querySelector('.menu-button').classList.remove('menu-open');
+                }
+            });
+
+            // Funciones del carrusel
+            document.addEventListener("DOMContentLoaded", function () {
+                let currentSlide = 0;
+                const slides = document.querySelectorAll('.carousel-item');
+
+                function moveCarousel(direction) {
+                    currentSlide = (currentSlide + direction + slides.length) % slides.length;
+                    document.querySelector('.carousel-items').style.transform = `translateX(-${currentSlide * 100}%)`;
+                }
+
+                document.querySelector('.carousel-button.left').addEventListener('click', function () {
+                    moveCarousel(-1);
+                });
+
+                document.querySelector('.carousel-button.right').addEventListener('click', function () {
+                    moveCarousel(1);
+                });
+
+                // Deslizar automático cada 2 segundos
+                setInterval(() => {
+                    moveCarousel(1);
+                }, 2000);
+            });
+        </script>
+    </body>
+</html>
+
+-->
+<!DOCTYPE html>
+<html lang="es">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="_csrf" th:content="${_csrf.token}"/>
+        <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
+        <title>PawsTrack - Inicio</title>
+        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+        <style>
+            :root {
+                --primary: #5a4d7c;
+                --primary-light: #9c7ca4;
+                --text: #333;
+                --text-light: #666;
+                --bg: #f9f9f9;
+                --white: #ffffff;
+                --border: rgba(0,0,0,0.1);
+                --success: #28a745;
+                --warning: #ffc107;
+                --danger: #dc3545;
+            }
+
+            * {
+                margin: 0;
+                padding: 0;
+                box-sizing: border-box;
+            }
+
+            body {
+                font-family: 'Inter', sans-serif;
+                color: var(--text);
+                background-color: var(--bg);
+                line-height: 1.6;
+                -webkit-font-smoothing: antialiased;
+            }
+
+            /* Header estilo Basic Agency */
+            .header {
+                position: fixed;
+                top: 0;
+                width: 100%;
+                background-color: var(--white);
+                z-index: 1000;
+                padding: 20px 5%;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                border-bottom: 1px solid var(--border);
+            }
+
+            .header-container {
+                width: 100%;
+                max-width: 1400px;
+                margin: 0 auto;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+            }
+
+            .logo {
+                display: flex;
+                align-items: center;
+                text-decoration: none;
+            }
+
+            .logo-icon {
+                width: 32px;
+                height: 32px;
+                background-color: var(--primary);
+                border-radius: 50%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                margin-right: 12px;
+            }
+
+            .logo-icon svg {
+                fill: var(--white);
+            }
+
+            .logo-text {
+                font-size: 1.4rem;
+                font-weight: 600;
+                color: var(--primary);
+                letter-spacing: -0.5px;
+            }
+
+            .nav {
+                display: flex;
+                align-items: center;
+            }
+
+            .nav-link {
+                color: var(--text);
+                text-decoration: none;
+                font-weight: 500;
+                font-size: 0.95rem;
+                margin-left: 30px;
+                position: relative;
+                transition: color 0.3s ease;
+            }
+
+            .nav-link:hover {
+                color: var(--primary);
+            }
+
+            .nav-link::after {
+                content: '';
+                position: absolute;
+                bottom: -5px;
+                left: 0;
+                width: 0;
+                height: 2px;
+                background-color: var(--primary);
+                transition: width 0.3s ease;
+            }
+
+            .nav-link:hover::after {
+                width: 100%;
+            }
+
+            .menu-toggle {
+                display: none;
+                background: none;
+                border: none;
+                cursor: pointer;
+                padding: 5px;
+            }
+
+            .hamburger {
+                width: 24px;
+                height: 16px;
+                position: relative;
+            }
+
+            .hamburger span {
+                display: block;
+                position: absolute;
+                height: 2px;
+                width: 100%;
+                background: var(--primary);
+                opacity: 1;
+                left: 0;
+                transform: rotate(0deg);
+                transition: .25s ease-in-out;
+            }
+
+            .hamburger span:nth-child(1) {
+                top: 0;
+            }
+
+            .hamburger span:nth-child(2) {
+                top: 7px;
+            }
+
+            .hamburger span:nth-child(3) {
+                top: 14px;
+            }
+
+            .menu-open .hamburger span:nth-child(1) {
+                top: 7px;
+                transform: rotate(45deg);
+            }
+
+            .menu-open .hamburger span:nth-child(2) {
+                opacity: 0;
+            }
+
+            .menu-open .hamburger span:nth-child(3) {
+                top: 7px;
+                transform: rotate(-45deg);
+            }
+
+            /* Main content */
+            .main {
+                padding-top: 80px;
+                min-height: 100vh;
+            }
+
+            .container {
+                width: 100%;
+                max-width: 1400px;
+                margin: 0 auto;
+                padding: 0 5%;
+            }
+
+            .section {
+                padding: 40px 0; /* Reducir el padding */
+                position: relative;
+            }
+            .section-title {
+                font-size: 2.5rem;
+                font-weight: 600;
+                color: var(--primary);
+                margin-bottom: 40px;
+                text-align: center;
+                letter-spacing: -1px;
+            }
+
+            /* Filters section */
+            .filters {
+                background: var(--white);
+                padding: 30px;
+                border-radius: 12px;
+                box-shadow: 0 5px 15px rgba(0,0,0,0.03);
+                margin-bottom: 0;
+            }
+
+            .filters-grid {
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+                gap: 20px;
+            }
+
+            .filter-group {
+                display: flex;
+                flex-direction: column;
+            }
+
+            .filter-label {
+                font-size: 0.85rem;
+                font-weight: 600;
+                color: var(--primary);
+                margin-bottom: 8px;
+                text-transform: uppercase;
+                letter-spacing: 0.5px;
+            }
+
+            .filter-select {
+                padding: 12px 15px;
+                border: 1px solid var(--border);
+                border-radius: 8px;
+                font-size: 0.95rem;
+                background-color: var(--white);
+                transition: all 0.3s ease;
+            }
+
+            .filter-select:focus {
+                outline: none;
+                border-color: var(--primary-light);
+                box-shadow: 0 0 0 2px rgba(90, 77, 124, 0.1);
+            }
+
+            /* Estilo base para todos los botones */
+            .btn {
+                padding: 10px 20px;
+                border-radius: 6px;
+                font-weight: 600;
+                font-size: 0.9rem;
+                cursor: pointer;
+                transition: all 0.2s ease;
+                border: none;
+                text-align: center;
+                display: inline-block;
+                text-decoration: none;
+                letter-spacing: 0.3px;
+                margin: 0 5px;
+            }
+
+            /* Botón primario (Filtrar) */
+            .btn-primary {
+                background-color: var(--primary); /* #5a4d7c */
+                color: white;
+                box-shadow: 0 2px 6px rgba(90, 77, 124, 0.25);
+                margin-bottom: 2%;
+            }
+
+            .btn-primary:hover {
+                background-color: var(--primary-light); /* #9c7ca4 */
+                transform: translateY(-1px);
+                box-shadow: 0 4px 8px rgba(90, 77, 124, 0.3);
+            }
+
+            .btn-primary:active {
+                transform: translateY(0);
+                box-shadow: 0 2px 4px rgba(90, 77, 124, 0.2);
+            }
+
+            /* Botón secundario (Limpiar) */
+            .btn-secondary {
+                background-color: white;
+                color: var(--primary);
+                border: 1px solid var(--primary);
+                box-shadow: 0 1px 3px rgba(90, 77, 124, 0.1);
+                margin-right: 4%;
+            }
+
+            .btn-secondary:hover {
+                background-color: #f8f5ff;
+                color: var(--primary);
+                border-color: var(--primary);
+                transform: translateY(-1px);
+                box-shadow: 0 2px 5px rgba(90, 77, 124, 0.15);
+            }
+
+            .btn-secondary:active {
+                transform: translateY(0);
+                box-shadow: 0 1px 3px rgba(90, 77, 124, 0.1);
+            }
+
+            /* Asegurar que el enlace se comporte como botón */
+            a.btn {
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
+            }
+
+            /* Espaciado entre botones */
+            .filter-group .btn + .btn {
+                margin-left: 12px;
+            }
+
+            /* Carousel */
+            .carousel {
+                position: relative;
+                width: 100%;
+                max-width: 800px;
+                margin: 0 auto;
+                overflow: hidden;
+                height: 500px; /* Altura fija para el carrusel */
+            }
+
+            .carousel-inner {
+                display: flex;
+                transition: transform 0.5s ease;
+                height: 100%;
+            }
+
+            .carousel-item {
+                min-width: 100%;
+                height: 100%;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+            }
+
+            .carousel-image {
+                width: auto;
+                height: 100%;
+                max-height: 100%;
+                object-fit: contain; /* Cambiado de 'cover' a 'contain' */
+                border-radius: 8px;
+            }
+
+            .carousel-caption {
+                padding: 20px;
+                text-align: center;
+                width: 100%;
+                background-color: rgba(255, 255, 255, 0.9);
+                margin-top: -60px; /* Ajuste para que el texto no tape la imagen */
+            }
+
+            .carousel-title {
+                font-size: 1.5rem;
+                font-weight: 600;
+                margin-bottom: 10px;
+                color: var(--primary);
+            }
+
+            .carousel-description {
+                color: var(--text-light);
+                max-width: 600px;
+                margin: 0 auto;
+            }
+
+            .carousel-control {
+                position: absolute;
+                top: 50%;
+                transform: translateY(-50%);
+                width: 40px;
+                height: 40px;
+                background-color: var(--white);
+                border-radius: 50%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                cursor: pointer;
+                box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+                border: none;
+                z-index: 10;
+                opacity: 0.8;
+                transition: opacity 0.3s ease;
+            }
+
+            .carousel-control:hover {
+                opacity: 1;
+            }
+
+            .carousel-control.prev {
+                left: 20px;
+            }
+
+            .carousel-control.next {
+                right: 20px;
+            }
+
+            /* Pets grid */
+            .pets-grid {
+                display: grid;
+                grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+                gap: 30px;
+                margin-top: 40px;
+            }
+
+            .pet-card {
+                background: var(--white);
+                border-radius: 12px;
+                overflow: hidden;
+                box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+                transition: all 0.3s ease;
+            }
+
+            .pet-card:hover {
+                transform: translateY(-5px);
+                box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            }
+
+            .pet-status {
+                padding: 6px 12px;
+                font-size: 0.75rem;
+                font-weight: 600;
+                border-radius: 4px;
+                display: inline-block;
+                margin: 15px;
+            }
+            .pets-section {
+                margin-top: 0;
+                padding-top: 0;
+            }
+            body, h1, h2, h3, h4, p {
+                margin: 0;
+                padding: 0;
+            }
+            .status-available {
+                background-color: var(--success);
+                color: white;
+            }
+
+            .status-pending {
+                background-color: var(--warning);
+                color: black;
+            }
+
+            .status-adopted {
+                background-color: var(--danger);
+                color: white;
+            }
+
+            .pet-image {
+                width: 100%;
+                height: 200px;
+                object-fit: cover;
+            }
+
+            .pet-info {
+                padding: 20px;
+            }
+
+            .pet-name {
+                font-size: 1.2rem;
+                font-weight: 600;
+                margin-bottom: 5px;
+                color: var(--primary);
+            }
+
+            .pet-meta {
+                display: flex;
+                gap: 15px;
+                margin-bottom: 15px;
+            }
+
+            .pet-meta-item {
+                display: flex;
+                align-items: center;
+                font-size: 0.85rem;
+                color: var(--text-light);
+            }
+
+            .pet-meta-item svg {
+                margin-right: 5px;
+                width: 14px;
+                height: 14px;
+                fill: var(--primary-light);
+            }
+
+            .pet-description {
+                color: var(--text-light);
+                font-size: 0.9rem;
+                margin-bottom: 20px;
+                line-height: 1.5;
+            }
+
+            .pet-actions {
+                padding: 0 20px 20px;
+            }
+
+            .adopt-btn {
+                display: block;
+                width: 100%;
+                padding: 12px;
+                background-color: var(--primary);
+                color: white;
+                text-align: center;
+                border-radius: 6px;
+                text-decoration: none;
+                font-weight: 500;
+                transition: background-color 0.3s ease;
+            }
+
+            .adopt-btn:hover {
+                background-color: var(--primary-light);
+            }
+
+            .no-results {
+                grid-column: 1 / -1;
+                text-align: center;
+                padding: 60px 0;
+                color: var(--text-light);
+            }
+
+            /* Responsive */
+            @media (max-width: 768px) {
+                .menu-toggle {
+                    display: block;
+                }
+
+                .nav {
+                    position: fixed;
+                    top: 80px;
+                    left: 0;
+                    width: 100%;
+                    background-color: var(--white);
+                    flex-direction: column;
+                    align-items: flex-start;
+                    padding: 20px 5%;
+                    box-shadow: 0 5px 10px rgba(0,0,0,0.05);
+                    transform: translateY(-150%);
+                    transition: transform 0.3s ease;
+                    z-index: 999;
+                }
+
+                .nav.active {
+                    transform: translateY(0);
+                }
+
+                .nav-link {
+                    margin: 15px 0;
+                    font-size: 1rem;
+                }
+
+                .section {
+                    padding: 60px 0;
+                }
+
+                .section-title {
+                    font-size: 2rem;
+                }
+
+                .carousel-image {
+                    height: 300px;
+                }
+            }
+
+            @media (max-width: 480px) {
+                .filters-grid {
+                    grid-template-columns: 1fr;
+                }
+
+                .section {
+                    padding: 40px 0;
+                }
+
+                .section-title {
+                    font-size: 1.8rem;
+                    margin-bottom: 30px;
+                }
+
+                .carousel-image {
+                    height: 250px;
+                }
+            }
+        </style>
+    </head>
+    <body>
+        <header class="header">
+            <div class="header-container">
+                <a th:href="@{/home}" class="logo">
+                    <div class="logo-icon">
+                        <svg width="18" height="18" viewBox="0 0 24 24">
+                        <path d="M12,2C6.48,2,2,6.48,2,12c0,5.52,4.48,10,10,10s10-4.48,10-10C22,6.48,17.52,2,12,2z M12,20c-4.41,0-8-3.59-8-8 c0-4.41,3.59-8,8-8s8,3.59,8,8C20,16.41,16.41,20,12,20z"/>
+                        <circle cx="9" cy="9" r="1.5"/>
+                        <circle cx="15" cy="9" r="1.5"/>
+                        <path d="M12,17.5c2.33,0,4.31-1.46,5.11-3.5H6.89C7.69,16.04,9.67,17.5,12,17.5z"/>
+                        </svg>
+                    </div>
+                    <span class="logo-text">PawsTrack</span>
+                </a>
+
+                <nav class="nav" id="nav">
+                    <a th:href="@{/home}" class="nav-link">Home</a>
+                    <a th:href="@{/index}" class="nav-link">Mis publicaciones</a>
+                    <a href="/perfil" class="nav-link">Perfil</a>
+                    <a href="/logout" class="nav-link">Cerrar Sesión</a>
+                </nav>
+
+                <button class="menu-toggle" id="menuToggle">
+                    <div class="hamburger">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </div>
+                </button>
+            </div>
+        </header>
+
+        <main class="main">
+            <div class="container">
+                <section class="section">
+                    <h1 class="section-title">Encuentra a tu compañero perfecto</h1>
+
+                    <div class="filters">
+                        <form th:action="@{/home}" method="get" class="filters-grid">
+                            <div class="filter-group">
+                                <label for="especie" class="filter-label">Especie</label>
+                                <select id="especie" name="especie" class="filter-select">
+                                    <option value="">Todas</option>
+                                    <option value="PERRO">Perro</option>
+                                    <option value="GATO">Gato</option>
+                                </select>
+                            </div>
+                            <div class="filter-group">
+                                <label for="edad" class="filter-label">Edad</label>
+                                <select id="edad" name="edad" class="filter-select">
+                                    <option value="">Todas</option>
+                                    <option value="CACHORRO">Cachorro</option>
+                                    <option value="JOVEN">Joven</option>
+                                    <option value="ADULTO">Adulto</option>
+                                </select>
+                            </div>
+                            <div class="filter-group">
+                                <label for="tamanio" class="filter-label">Tamaño</label>
+                                <select id="tamanio" name="tamanio" class="filter-select">
+                                    <option value="">Todos</option>
+                                    <option value="PEQUENIO">Pequeño</option>
+                                    <option value="MEDIANO">Mediano</option>
+                                    <option value="GRANDE">Grande</option>
+                                </select>
+                            </div>
+                            <div class="filter-group">
+                                <label for="departamento" class="filter-label">Departamento</label>
+                                <select id="departamento" name="departamento" class="filter-select">
+                                    <option value="">Todos</option>
+                                    <option value="Capital">Capital</option>
+                                    <option value="Godoy Cruz">Godoy Cruz</option>
+                                    <option value="Guaymallén">Guaymallén</option>
+                                    <option value="Las Heras">Las Heras</option>
+                                    <option value="Luján de Cuyo">Luján de Cuyo</option>
+                                    <option value="Maipú">Maipú</option>
+                                    <option value="San Martín">San Martín</option>
+                                    <option value="San Rafael">San Rafael</option>
+                                    <option value="Tunuyán">Tunuyán</option>
+                                    <option value="Tupungato">Tupungato</option>
+                                </select>
+                            </div>
+                            <div class="filter-group">
+                                <label for="estado" class="filter-label">Estado de adopción</label>
+                                <select id="estado" name="estado" class="filter-select">
+                                    <option value="">Todos los estados</option>
+                                    <option value="EN_STOCK">Disponible</option>
+                                    <option value="EN_PROCESO">En proceso</option>
+                                    <option value="ADOPTADO">Adoptado</option>
+                                </select>
+                            </div>
+                            <div class="filter-group">
+                                <button type="submit" class="btn btn-primary">Filtrar</button>
+                                <!-- <a href="/home" class="btn btn-secondary">Limpiar</a> -->
+                            </div>
+                        </form>
+                    </div>
+                </section>
+
+                <section class="section">
+                    <h2 class="section-title">Los que más esperan un hogar</h2>
+
+                    <div class="carousel">
+                        <div class="carousel-inner">
+                            <div class="carousel-item" th:each="publicacion, iterStat : ${publicaciones}" th:data-index="${iterStat.index}">
+                                <img th:src="@{'/imagenes/' + ${publicacion.archivoFoto}}" 
+                                     alt="Mascota" 
+                                     class="carousel-image"
+                                     onerror="this.src='/images/default-pet.jpg'">
+                                <div class="carousel-caption">
+                                    <h3 class="carousel-title" th:text="${publicacion.nombreMascota}"></h3>
+                                    <p class="carousel-description" th:text="${publicacion.descripcion}"></p>
+                                </div>
+                            </div>
+                        </div>
+                        <button class="carousel-control prev">‹</button>
+                        <button class="carousel-control next">›</button>
+                    </div>
+                </section>
+
+                <section class="section">
+                    <h2 class="section-title">Mascotas</h2>
+
+                    <div class="pets-grid">
+                        <div th:if="${not #lists.isEmpty(publicaciones)}" th:each="publicacion : ${publicaciones}" class="pet-card">
+                            <div th:if="${publicacion.estado != null}">
+                                <span th:if="${publicacion.estado.toString()} == 'EN_STOCK'" class="pet-status status-available">Disponible</span>
+                                <span th:if="${publicacion.estado.toString()} == 'EN_PROCESO'" class="pet-status status-pending">En proceso</span>
+                                <span th:if="${publicacion.estado.toString()} == 'ADOPTADO'" class="pet-status status-adopted">Adoptado ❤️</span>
+                            </div>
+
+                            <img th:if="${publicacion.archivoFoto != null}" th:src="@{'/imagenes/' + ${publicacion.archivoFoto}}" alt="Mascota" class="pet-image">
+                            <img th:unless="${publicacion.archivoFoto != null}" src="/images/default-pet.jpg" alt="Mascota default" class="pet-image">
+
+                            <div class="pet-info">
+                                <h3 class="pet-name" th:text="${publicacion.nombreMascota} ?: 'Sin nombre'"></h3>
+
+                                <div class="pet-meta">
+                                    <span class="pet-meta-item">
+                                        <svg viewBox="0 0 24 24">
+                                        <path d="M12,2C6.48,2,2,6.48,2,12s4.48,10,10,10s10-4.48,10-10S17.52,2,12,2z M12,20c-4.41,0-8-3.59-8-8s3.59-8,8-8s8,3.59,8,8 S16.41,20,12,20z"/>
+                                        <path d="M12.5,7H11v6l5.2,3.2l0.8-1.3l-4.5-2.7V7z"/>
+                                        </svg>
+                                        <span th:text="${publicacion.edad} ?: 'No especificado'"></span>
+                                    </span>
+                                    <span class="pet-meta-item">
+                                        <svg viewBox="0 0 24 24">
+                                        <path d="M12,2C8.13,2,5,5.13,5,9c0,5.25,7,13,7,13s7-7.75,7-13C19,5.13,15.87,2,12,2z M12,11.5c-1.38,0-2.5-1.12-2.5-2.5 s1.12-2.5,2.5-2.5s2.5,1.12,2.5,2.5S13.38,11.5,12,11.5z"/>
+                                        </svg>
+                                        <span th:text="${publicacion.departamento} ?: 'No especificado'"></span>
+                                    </span>
+                                </div>
+
+                                <p class="pet-description" th:text="${publicacion.descripcion} ?: 'Sin descripción'"></p>
+                            </div>
+
+                            <div class="pet-actions">
+                                <a th:href="'https://wa.me/54' + ${publicacion.telefono} + '?text=Hola!%20Vi%20tu%20publicación%20y%20me%20gustaría%20adoptar%20a%20' + ${publicacion.nombreMascota}" 
+                                   class="adopt-btn" 
+                                   target="_blank">
+                                    Contactar para adoptar
+                                </a>
+                            </div>
+                        </div>
+
+                        <div th:unless="${not #lists.isEmpty(publicaciones)}" class="no-results">
+                            No se encontraron mascotas que coincidan con los filtros.
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </main>
+
+        <script>
+            // Mobile menu toggle
+            const menuToggle = document.getElementById('menuToggle');
+            const nav = document.getElementById('nav');
+
+            menuToggle.addEventListener('click', () => {
+                menuToggle.classList.toggle('menu-open');
+                nav.classList.toggle('active');
+            });
+
+            // Close menu when clicking on a link
+            document.querySelectorAll('.nav-link').forEach(link => {
+                link.addEventListener('click', () => {
+                    menuToggle.classList.remove('menu-open');
+                    nav.classList.remove('active');
+                });
+            });
+
+            // Carousel functionality
+            document.addEventListener('DOMContentLoaded', () => {
+                const carousel = document.querySelector('.carousel-inner');
+                const items = document.querySelectorAll('.carousel-item');
+                const prevBtn = document.querySelector('.prev');
+                const nextBtn = document.querySelector('.next');
+                let currentIndex = 0;
+                const itemWidth = 100;
+                const totalItems = items.length;
+
+                function updateCarousel() {
+                    carousel.style.transform = `translateX(-${currentIndex * itemWidth}%)`;
+                }
+
+                function nextSlide() {
+                    currentIndex = (currentIndex + 1) % totalItems;
+                    updateCarousel();
+                }
+
+                function prevSlide() {
+                    currentIndex = (currentIndex - 1 + totalItems) % totalItems;
+                    updateCarousel();
+                }
+
+                nextBtn.addEventListener('click', nextSlide);
+                prevBtn.addEventListener('click', prevSlide);
+
+                // Auto-advance every 5 seconds
+                setInterval(nextSlide, 5000);
+            });
+
+            // Close menu on resize if window is large enough
+            window.addEventListener('resize', () => {
+                if (window.innerWidth > 768) {
+                    menuToggle.classList.remove('menu-open');
+                    nav.classList.remove('active');
+                }
+            });
+        </script>
+    </body>
+</html>

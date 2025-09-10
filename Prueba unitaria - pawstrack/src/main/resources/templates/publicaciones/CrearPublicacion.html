@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crear Nueva Publicación - PawsTrack</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #5a4d7c;
+            --primary-light: #9c7ca4;
+            --text: #333;
+            --text-light: #666;
+            --bg: #f9f9f9;
+            --white: #ffffff;
+            --border: rgba(0,0,0,0.1);
+            --success: #28a745;
+            --warning: #ffc107;
+            --danger: #dc3545;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 40px auto;
+            background-color: var(--white);
+            border-radius: 12px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            padding: 40px;
+        }
+
+        h1 {
+            font-size: 2.2rem;
+            font-weight: 600;
+            color: var(--primary);
+            margin-bottom: 30px;
+            text-align: center;
+            letter-spacing: -0.5px;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group.full-width {
+            grid-column: 1 / -1;
+        }
+
+        label {
+            display: block;
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: var(--primary);
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        input, textarea, select {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            font-size: 0.95rem;
+            background-color: var(--white);
+            transition: all 0.3s ease;
+        }
+
+        input:focus, textarea:focus, select:focus {
+            outline: none;
+            border-color: var(--primary-light);
+            box-shadow: 0 0 0 2px rgba(90, 77, 124, 0.1);
+        }
+
+        textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+
+        input[type="file"] {
+            padding: 10px;
+            border: 1px dashed var(--border);
+        }
+
+        .form-actions {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 30px;
+        }
+
+        .btn {
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            border: none;
+        }
+
+        .btn-primary {
+            background-color: var(--primary);
+            color: white;
+            box-shadow: 0 2px 4px rgba(90, 77, 124, 0.2);
+        }
+
+        .btn-primary:hover {
+            background-color: var(--primary-light);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(90, 77, 124, 0.3);
+        }
+
+        .btn-secondary {
+            background-color: white;
+            color: var(--primary);
+            border: 1px solid var(--primary);
+        }
+
+        .btn-secondary:hover {
+            background-color: rgba(90, 77, 124, 0.05);
+            border-color: var(--primary-light);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .container {
+                padding: 30px;
+                margin: 20px auto;
+            }
+            
+            h1 {
+                font-size: 1.8rem;
+            }
+            
+            .form-actions {
+                flex-direction: column;
+                gap: 10px;
+            }
+            
+            .btn {
+                width: 100%;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 20px;
+            }
+            
+            body {
+                padding: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Crear Nueva Publicación</h1>
+
+        <form method="POST" enctype="multipart/form-data" th:action="@{/publicaciones/crear}" th:object="${publiDto}">
+            <div class="form-grid">
+                <div class="form-group">
+                    <label for="nombre_mascota">Nombre de la Mascota</label>
+                    <input type="text" id="nombre_mascota" name="nombre_mascota" th:field="${publiDto.nombre_mascota}" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="telefono">Teléfono</label>
+                    <input type="text" id="telefono" name="telefono" th:field="${publiDto.telefono}" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="archivoFoto">Foto</label>
+                    <input type="file" id="archivoFoto" name="archivoFoto" th:field="${publiDto.archivoFoto}" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="estado">Estado</label>
+                    <select id="estado" name="estado" th:field="*{estado}" required>
+                        <option value="EN_STOCK">Disponible</option>
+                        <option value="EN_PROCESO">En proceso</option>
+                        <option value="ADOPTADO">Adoptado</option>
+                    </select>
+                </div>
+
+                <div class="form-group full-width">
+                    <label for="descripcion">Descripción</label>
+                    <textarea id="descripcion" name="descripcion" th:field="${publiDto.descripcion}" required></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="especie">Especie</label>
+                    <select id="especie" name="especie" th:field="${publiDto.especie}" required>
+                        <option value="">Seleccione una especie</option>
+                        <option value="PERRO">Perro</option>
+                        <option value="GATO">Gato</option>
+                        <option value="OTRO">Otro</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="edad">Edad</label>
+                    <select id="edad" name="edad" th:field="${publiDto.edad}" required>
+                        <option value="">Seleccione edad</option>
+                        <option value="CACHORRO">Cachorro</option>
+                        <option value="JOVEN">Joven</option>
+                        <option value="ADULTO">Adulto</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="tamanio">Tamaño</label>
+                    <select id="tamanio" name="tamanio" th:field="${publiDto.tamanio}" required>
+                        <option value="">Seleccione tamaño</option>
+                        <option value="PEQUENIO">Pequeño</option>
+                        <option value="MEDIANO">Mediano</option>
+                        <option value="GRANDE">Grande</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="departamento">Departamento</label>
+                    <select id="departamento" name="departamento" th:field="${publiDto.departamento}" required>
+                        <option value="">Seleccione departamento</option>
+                        <option value="Capital">Capital</option>
+                        <option value="Godoy Cruz">Godoy Cruz</option>
+                        <option value="Guaymallén">Guaymallén</option>
+                        <option value="Las Heras">Las Heras</option>
+                        <option value="Luján de Cuyo">Luján de Cuyo</option>
+                        <option value="Maipú">Maipú</option>
+                        <option value="San Martín">San Martín</option>
+                        <option value="San Rafael">San Rafael</option>
+                        <option value="Tunuyán">Tunuyán</option>
+                        <option value="Tupungato">Tupungato</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-actions">
+                <button type="submit" class="btn btn-primary">Guardar Publicación</button>
+                <a href="/home" class="btn btn-secondary">Cancelar</a>
+            </div>
+        </form>
+    </div>
+</body>
+</html>
